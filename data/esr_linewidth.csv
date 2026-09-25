@@ -1,0 +1,12 @@
+# Representative data. Simulated from accepted physics, not a record of measured results.
+quantity,value,uncertainty,unit,note
+RF frequency,50,0.1,MHz,set value on the medium plug-in coil
+resonance current I=,0.4172,0.00218,A,mean of 5 repeats
+resonance field B0,1.74,0.00916,mT,from the Helmholtz calibration
+modulation current I_mod (RMS),0.102,0.005,A,trace spans the 10.0 cm X axis
+full modulation voltage U_mod,5,0.1,V,0.5 V/cm times 10.0 cm
+half-height width delta_U,0.98,0.05,V,read on the expanded 0.2 V/cm X scale
+half-width current delta_I,0.05655,0.00416,A,script equation (7)
+line width delta_B0 (FWHM),0.2379,0.0177,mT,converted with the measured coil constant
+peak-to-peak derivative width,0.1374,0.0102,mT,FWHM divided by sqrt(3) for literature comparison
+transverse relaxation time T2,47.85,3.55,ns,Lorentzian line so T2 = 2 / (gamma delta_B0)

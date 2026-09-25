@@ -1,0 +1,6 @@
+# Representative data. Simulated from accepted physics, not a record of measured results.
+sample,formula,resonant_nucleus,coil_current_A,magnetic_field_T,resonance_frequency_MHz,frequency_uncertainty_MHz,observed_line_width_mT,wiggles_observed,predicted_1H_frequency_MHz,predicted_19F_frequency_MHz
+glycerine,C3H5(OH)3,1H,3.50,0.4194,17.87,0.020,0.010,4 to 6 and strong,17.858,16.809
+polystyrene,(C8H8)n,1H,3.50,0.4194,17.81,0.120,0.500,none,17.858,16.809
+polythene,(C2H4)n,1H (deduced),3.50,0.4194,17.80,0.050,0.150,1 to 2 and weak,17.858,16.809
+PTFE,(C2F4)n,19F,3.50,0.4194,16.88,0.050,0.150,none,17.858,16.809

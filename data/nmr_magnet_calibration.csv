@@ -1,0 +1,24 @@
+# Representative data. Simulated from accepted physics, not a record of measured results.
+sweep_direction,coil_current_A,magnetic_field_T,field_uncertainty_T,current_uncertainty_A
+rising,3.00,0.3798,0.0005,0.005
+rising,3.10,0.3876,0.0005,0.005
+rising,3.20,0.3962,0.0005,0.005
+rising,3.30,0.4041,0.0005,0.005
+rising,3.40,0.4118,0.0005,0.005
+rising,3.50,0.4192,0.0005,0.005
+rising,3.60,0.4275,0.0005,0.005
+rising,3.70,0.4337,0.0005,0.005
+rising,3.80,0.4412,0.0005,0.005
+rising,3.90,0.4480,0.0005,0.005
+rising,4.00,0.4550,0.0005,0.005
+falling,4.00,0.4550,0.0005,0.005
+falling,3.90,0.4483,0.0005,0.005
+falling,3.80,0.4423,0.0005,0.005
+falling,3.70,0.4358,0.0005,0.005
+falling,3.60,0.4297,0.0005,0.005
+falling,3.50,0.4213,0.0005,0.005
+falling,3.40,0.4153,0.0005,0.005
+falling,3.30,0.4083,0.0005,0.005
+falling,3.20,0.4012,0.0005,0.005
+falling,3.10,0.3938,0.0005,0.005
+falling,3.00,0.3850,0.0005,0.005
