@@ -1,82 +1,104 @@
-# Physics Laboratory Reports: ESR, NMR and the Hall Effect in a 2DEG
+# Experimental Data Analysis: Fitting, Error Propagation and Uncertainty
 
-> ## Read this first: the data in these reports is not measured data
->
-> **Every number, table and figure in both reports is representative data.** It was generated from
-> accepted physical constants plus realistic instrument scatter, then analysed exactly as real
-> laboratory readings would be, in order to demonstrate the method, the analysis and the treatment of
-> uncertainty.
->
-> **None of it is a record of measurements taken by the author.** The original laboratory notebooks
-> for these experiments are no longer available, so the reports were written up from the experiment
-> briefs instead. The apparatus, the procedure, the theory and the comparisons with published values
-> are genuine. The measured values are not.
->
-> **Nothing here should be read, cited or reused as experimental evidence.**
+Curve fitting, uncertainty propagation and the separation of random from systematic error, worked
+end to end on two physics experiments and written up to publication standard.
 
-Two complete undergraduate physics laboratory reports, written to demonstrate experimental analysis
-and uncertainty treatment end to end: from raw readings, through fitting and error propagation, to a
-physical result compared against the literature.
+The datasets here are **generated rather than measured**, which is deliberate: because the true
+values used to build them are known, every fit can be checked against the answer it was supposed to
+recover. Full detail in [About the data](#about-the-data) below.
 
 Author: Abdullah Alkabbawi. The experiments are third-year laboratory experiments from a BSc (Hons)
 Physics degree at the University of Glasgow.
 
-## The two reports
+## What this demonstrates
 
-| Report | Pages | PDF |
+| Technique | Where |
+| :--- | :--- |
+| Weighted least squares, uncertainties from the covariance matrix | `analysis/generate_esr_nmr.py`, `analysis/generate_hall.py` |
+| Straight-line fitting with uncertainties on **both** axes, by the iterated effective variance method | `effective_variance_fit()`, `generate_esr_nmr.py:215` |
+| Monte Carlo cross-check, 5000 draws, resampling correlated calibration coefficients with the data | `generate_esr_nmr.py:572` |
+| The same quantity derived three independent ways and compared: effective variance, chain rule, Monte Carlo | `generate_esr_nmr.py:553` |
+| Reduced chi-squared reported with degrees of freedom, and used to judge the fit | both generators |
+| Statistical and systematic uncertainty separated, with correlated systematics carried through to the final figure | both generators |
+| Polynomial calibration of a non-linear instrument, with hysteresis measured rather than ignored | iron-cored electromagnet, both reports |
+| Global weighted fit that separates the wanted term from a contaminating one | Hall: `V_H = m_H(IB) + kI + c` |
+| Every result compared against published values, with the difference expressed in standard deviations | `data/results_*.md` |
+
+Each fitted value is recorded in `data/results_esr_nmr.md` and `data/results_hall.md` alongside the
+true value used to generate it and the published value it is compared against, so the accuracy of
+the analysis itself can be audited line by line.
+
+## Case study 1: magnetic resonance
+
+[`esr_nmr_lab_report.pdf`](esr_nmr_lab_report.pdf), 26 pages. Electron spin resonance in DPPH and
+nuclear magnetic resonance of protons and of fluorine.
+
+The measurement chain has two calibrations in series, so the uncertainty on the final g-factor comes
+from two fitted curves at once. That is what makes it a good error-propagation exercise, and it is
+why the gradient is derived three separate ways and the three compared.
+
+| Quantity | Recovered | Published |
 | :--- | :--- | :--- |
-| Electron Spin Resonance and Nuclear Magnetic Resonance | 26 | [`esr_nmr_lab_report.pdf`](esr_nmr_lab_report.pdf) |
-| The Hall Effect in a Two-Dimensional Electron Gas | 26 | [`hall_effect_2deg_lab_report.pdf`](hall_effect_2deg_lab_report.pdf) |
+| g-factor of DPPH | 1.998 +/- 0.021 | 2.0036 |
+| Absorption line width (FWHM) | 0.238 +/- 0.018 mT | 1.5 to 3.0 G peak-to-peak |
+| g-factor of the proton | 5.57 +/- 0.08 | 5.5857 |
+| g-factor of fluorine-19 | 5.19 +/- 0.10 | 5.2577 |
 
-### ESR and NMR
+Also covered: Helmholtz coil calibration against a magnetometer, the hysteresis between rising and
+falling branches of an iron-cored electromagnet, and identifying polythene from its resonance
+frequency alone.
 
-Magnetic resonance of an unpaired electron and of two spin one-half nuclei.
+## Case study 2: the Hall effect in a two-dimensional electron gas
 
-- Helmholtz coil calibration against a Hall magnetometer.
-- ESR in DPPH across 15 to 130 MHz on three plug-in coils, giving the electron spin g-factor.
-- Absorption line width, and the transverse relaxation time implied by it.
-- Iron-cored electromagnet calibration, including the hysteresis between rising and falling branches.
-- NMR of protons in glycerine and of fluorine in PTFE, giving both nuclear g-factors.
-- Identification of polythene from its resonance frequency.
+[`hall_effect_2deg_lab_report.pdf`](hall_effect_2deg_lab_report.pdf), 26 pages. A GaAs/AlGaAs
+modulation-doped heterostructure on a six-contact Hall bar, at room temperature and at about 79 K.
 
-Representative results: g(DPPH) = 1.998 +/- 0.021 against an accepted 2.0036; line width
-0.238 +/- 0.018 mT; g(1H) = 5.57 +/- 0.08 against 5.5857; g(19F) = 5.19 +/- 0.10 against 5.2577.
+The interesting analysis problem is contact misalignment: a small offset voltage contaminates the
+Hall signal. Rather than subtract it by eye, a three-parameter global weighted fit separates the
+Hall term from the current-proportional contamination, using all 90 points at once.
 
-### Hall effect in a 2DEG
+| Quantity | 300 K | 79 K |
+| :--- | :--- | :--- |
+| Sheet carrier density | 5.05 +/- 0.19 x 10^15 m^-2 | 4.44 +/- 0.17 x 10^15 m^-2 |
+| Electron mobility | 0.791 +/- 0.032 m^2 V^-1 s^-1 | 11.93 +/- 0.48 m^2 V^-1 s^-1 |
+| Resistance per square | 1561 +/- 16 ohm/sq | 117.9 +/- 1.2 ohm/sq |
 
-Characterisation of a GaAs/AlGaAs modulation-doped heterostructure on a six-contact Hall bar, at
-room temperature and under liquid nitrogen cooling.
-
-- Electromagnet calibration with a polynomial fit and visible hysteresis.
-- Hall voltage against sample current and flux density, reduced by a global weighted fit that
-  separates the Hall term from a contact-misalignment term.
-- Longitudinal resistance and resistance per square.
-- Angular dependence of the Hall voltage, fitted to a cosine.
-- The same measurements repeated at about 79 K.
-
-Representative results: sheet density falls from 5.05 to 4.44 x 10^15 m^-2 on cooling, a change of
-12 per cent, while mobility rises from 0.79 to 11.93 m^2 V^-1 s^-1, a factor of 15.1. That contrast
-is the expected signature of modulation doping.
+Mobility rises by a factor of 15.1 on cooling while the carrier density falls only 12 per cent. That
+contrast is the signature of modulation doping, and both mobilities agree with published values for
+comparable structures to within 3 per cent.
 
 ## Reproducing the analysis
-
-The generators are seeded, so the same data comes back every time.
 
 ```bash
 python analysis/generate_esr_nmr.py
 python analysis/generate_hall.py
 ```
 
-Each script builds the representative dataset forward from accepted physical parameters, adds
-realistic scatter and systematic offsets, then fits the result and propagates the uncertainties. The
-values quoted in the reports are the values those fits return, not the ground truth fed in, so the
-two differ slightly. That difference is the point.
+The generators are seeded, so the same numbers come back every run. Each one builds the dataset
+forward from accepted physical parameters, adds realistic instrument scatter and systematic offsets,
+then fits the result and propagates the uncertainties. **The values quoted in the reports are the
+values those fits return, not the parameters fed in**, so the two differ slightly, and that
+difference is the measure of how well the analysis works.
 
-Requires numpy, scipy, matplotlib and pandas. Building the PDFs needs a LaTeX installation:
+Requires numpy, scipy, matplotlib and pandas. Rebuilding the PDFs needs LaTeX:
 
 ```bash
 pdflatex -interaction=nonstopmode esr_nmr_lab_report.tex
 ```
+
+## About the data
+
+The laboratory notebooks for these experiments are no longer available. The reports were therefore
+written up from the experiment briefs, with representative datasets generated from accepted physical
+constants plus realistic instrument scatter, and then analysed exactly as real readings would be.
+
+**No number in either report is a record of a measurement taken by the author, and nothing here
+should be cited or reused as experimental evidence.** The apparatus, the procedure, the theory and
+the comparisons with published values are genuine; the readings are not.
+
+This is stated in a note after each abstract, in the caption of every results table and data figure,
+in a footer on all 52 pages of the two reports, in the header of all 16 data files, and in the
+figure images themselves so that a figure taken out of context stays labelled.
 
 ## Layout
 
@@ -90,12 +112,8 @@ pdflatex -interaction=nonstopmode esr_nmr_lab_report.tex
 └── tables/       generated LaTeX fragments for the appendix tables
 ```
 
-`data/results_esr_nmr.md` and `data/results_hall.md` record every fitted value with its uncertainty,
-the ground truth used to generate it, the published value it is compared against, and the
-percentage difference.
-
 ## Source material
 
 The experiment briefs these reports follow are departmental documents belonging to the University of
-Glasgow. They are **not** included here and should not be redistributed. Only the reports, the
-analysis code and the generated data are in this repository.
+Glasgow. They are **not** included here and are not redistributed. Only the reports, the analysis
+code and the generated data are in this repository.
